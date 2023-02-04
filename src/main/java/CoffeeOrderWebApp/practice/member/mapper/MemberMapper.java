@@ -16,6 +16,7 @@ public interface MemberMapper {
     Member MemberPatchDtoToMember(MemberDto.patchDto patchDto);
 
     @Mapping(source = "stamp.stampCount", target = "stampCount")
+    @Mapping(source = "status.status", target = "status")
     MemberDto.responseDto MemberToMemberResponseDto(Member member);
 
     List<MemberDto.responseDto> MemberListToMemberResponseDtos(List<Member> memberList);

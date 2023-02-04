@@ -1,10 +1,13 @@
 package CoffeeOrderWebApp.practice.coffee.dto;
 
 import CoffeeOrderWebApp.practice.coffee.entity.Coffee;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
 public class CoffeeDto {
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class postDto{
         @NotNull
         @Pattern(regexp = "[가-힣]+", message = "커피 한글 이름을 입력해주세요.")
@@ -32,6 +37,8 @@ public class CoffeeDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class patchDto{
         private String korName;
         private String engName;

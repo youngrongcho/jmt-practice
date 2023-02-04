@@ -3,9 +3,11 @@ package CoffeeOrderWebApp.practice.order.service;
 import CoffeeOrderWebApp.practice.coffee.service.CoffeeService;
 import CoffeeOrderWebApp.practice.exception.ExceptionEnum;
 import CoffeeOrderWebApp.practice.exception.LogicException;
+import CoffeeOrderWebApp.practice.member.entity.Member;
 import CoffeeOrderWebApp.practice.member.service.MemberService;
 import CoffeeOrderWebApp.practice.order.entity.Order;
 import CoffeeOrderWebApp.practice.order.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +28,11 @@ public class OrderService {
     }
 
     public Order createOrder(Order order){
-        memberService.findMember(order.getMember().getMemberId());
+        Member foundMember = memberService.findMember(order.getMember().getMemberId());
         order.getOrderedCoffees().stream()
                 .forEach(coffee -> {coffeeService.findCoffee(coffee.getCoffee().getCoffeeId());});
-        memberService.addStampCount(order);
+        int newStampCount = memberService.addStampCount(order);
+        foundMember.getStamp().setStampCount(newStampCount);
         return orderRepository.save(order);
     }
 
@@ -58,8 +61,8 @@ public class OrderService {
     }
 
     private Order findOrder(long orderId) {
-        Optional<Order> optionalOrderEntity = orderRepository.findById(orderId);
-        Order foundOrder = optionalOrderEntity.orElseThrow(()->new LogicException(ExceptionEnum.ORDER_NOT_FOUND));
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Order foundOrder = optionalOrder.orElseThrow(()->new LogicException(ExceptionEnum.ORDER_NOT_FOUND));
         return foundOrder;
     }
 }

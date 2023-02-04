@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-01T22:05:55+0900",
+    date = "2023-02-03T23:35:14+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.17 (Azul Systems, Inc.)"
 )
 @Component
@@ -54,13 +54,13 @@ public class MemberMapperImpl implements MemberMapper {
         MemberDto.responseDto.responseDtoBuilder responseDto = MemberDto.responseDto.builder();
 
         responseDto.stampCount( memberStampStampCount( member ) );
+        responseDto.status( memberStatusStatus( member ) );
         if ( member.getMemberId() != null ) {
             responseDto.memberId( member.getMemberId() );
         }
         responseDto.name( member.getName() );
         responseDto.email( member.getEmail() );
         responseDto.phone( member.getPhone() );
-        responseDto.status( member.getStatus() );
         responseDto.createdAt( member.getCreatedAt() );
         responseDto.modifiedAt( member.getModifiedAt() );
 
@@ -91,5 +91,20 @@ public class MemberMapperImpl implements MemberMapper {
         }
         int stampCount = stamp.getStampCount();
         return stampCount;
+    }
+
+    private String memberStatusStatus(Member member) {
+        if ( member == null ) {
+            return null;
+        }
+        Member.Status status = member.getStatus();
+        if ( status == null ) {
+            return null;
+        }
+        String status1 = status.getStatus();
+        if ( status1 == null ) {
+            return null;
+        }
+        return status1;
     }
 }

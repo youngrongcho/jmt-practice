@@ -1,8 +1,6 @@
 package CoffeeOrderWebApp.practice.order.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -10,6 +8,8 @@ import javax.validation.constraints.NotNull;
 public class OrderedCoffeeDto {
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Request{
         @NotNull
         @Min(1)

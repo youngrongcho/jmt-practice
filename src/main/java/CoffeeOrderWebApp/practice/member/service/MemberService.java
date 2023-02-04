@@ -63,13 +63,13 @@ public class MemberService {
         return findMember;
     }
 
-    public void addStampCount(Order order) {
+    public int addStampCount(Order order) {
         Member foundMember = findMember(order.getMember().getMemberId());
         Stamp stamp = foundMember.getStamp();
 
         int stampCount = stamp.getStampCount();
         int quantity = order.getOrderedCoffees().stream()
                 .map(orderedCoffee -> orderedCoffee.getQuantity()).mapToInt(i->i).sum();
-        stamp.setStampCount(stampCount+quantity);
+        return stampCount+quantity;
     }
 }
