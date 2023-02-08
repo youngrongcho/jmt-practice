@@ -2,10 +2,8 @@ package CoffeeOrderWebApp.practice.member.mapper;
 
 import CoffeeOrderWebApp.practice.member.dto.MemberDto;
 import CoffeeOrderWebApp.practice.member.entity.Member;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 

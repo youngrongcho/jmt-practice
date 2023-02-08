@@ -30,8 +30,9 @@ public class MemberService {
     public Member modifyMember(Member member){
         Member foundmember = findMember(member.getMemberId());
 
-        Optional.ofNullable(member.getName()).ifPresent(name->foundmember.setName(name));
-        Optional.ofNullable(member.getPhone()).ifPresent(phone->foundmember.setPhone(phone));
+        Optional.ofNullable(member.getName()).ifPresent(foundmember::setName);
+        Optional.ofNullable(member.getPhone()).ifPresent(foundmember::setPhone);
+        Optional.ofNullable(member.getPassword()).ifPresent(foundmember::setPassword);
 
         return memberRepository.save(foundmember);
     }

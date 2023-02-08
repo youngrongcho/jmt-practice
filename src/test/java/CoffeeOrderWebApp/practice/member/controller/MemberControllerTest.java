@@ -52,17 +52,19 @@ class MemberControllerTest {
     @MockBean
     private MemberMapper mapper;
 
-    ConstraintDescriptions requestConstraints = new ConstraintDescriptions(MemberDto.class);
-    List<String> nameAttribute = requestConstraints.descriptionsForProperty("name");
-    List<String> emailAttribute = requestConstraints.descriptionsForProperty("email");
-    List<String> phoneAttribute = requestConstraints.descriptionsForProperty("phone");
-
     @Test
     public void postMember() throws Exception {
+        ConstraintDescriptions requestConstraints = new ConstraintDescriptions(MemberDto.postDto.class);
+        List<String> nameAttribute = requestConstraints.descriptionsForProperty("name");
+        List<String> emailAttribute = requestConstraints.descriptionsForProperty("email");
+        List<String> phoneAttribute = requestConstraints.descriptionsForProperty("phone");
+        List<String> passwordAttribute = requestConstraints.descriptionsForProperty("password");
+
         MemberDto.postDto postDto = MemberDto.postDto.builder()
                 .phone("010-1111-1111")
                 .name("조영롱")
-                .email("www@naver.com").build();
+                .email("www@naver.com")
+                .password("1111111").build();
 
         String content = gson.toJson(postDto);
 
@@ -88,7 +90,9 @@ class MemberControllerTest {
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
                                         .attributes(key("constraints").value(emailAttribute)),
                                 fieldWithPath("phone").type(JsonFieldType.STRING).description("휴대폰 번호")
-                                        .attributes(key("constraints").value(phoneAttribute))
+                                        .attributes(key("constraints").value(phoneAttribute)),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀 번호")
+                                        .attributes(key("constraints").value(passwordAttribute))
                         ),
                         responseHeaders(
                                 headerWithName("location").description("회원 정보 엔드포인트")
@@ -98,6 +102,10 @@ class MemberControllerTest {
 
     @Test
     void patchMember() throws Exception {
+        ConstraintDescriptions requestConstraints = new ConstraintDescriptions(MemberDto.patchDto.class);
+        List<String> nameAttribute = requestConstraints.descriptionsForProperty("name");
+        List<String> phoneAttribute = requestConstraints.descriptionsForProperty("phone");
+
         //given
         MemberDto.patchDto patchDto = MemberDto.patchDto.builder()
                 .name("영롱").build();

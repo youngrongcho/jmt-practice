@@ -2,6 +2,7 @@ package CoffeeOrderWebApp.practice.stamp;
 
 import CoffeeOrderWebApp.practice.auditing.TimeManager;
 import CoffeeOrderWebApp.practice.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

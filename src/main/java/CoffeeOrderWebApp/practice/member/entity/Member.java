@@ -1,9 +1,16 @@
 package CoffeeOrderWebApp.practice.member.entity;
 
+import CoffeeOrderWebApp.practice.answer.entity.Answer;
 import CoffeeOrderWebApp.practice.auditing.TimeManager;
+import CoffeeOrderWebApp.practice.question.entity.Like;
 import CoffeeOrderWebApp.practice.order.entity.Order;
+import CoffeeOrderWebApp.practice.question.entity.Question;
 import CoffeeOrderWebApp.practice.stamp.Stamp;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,6 +35,9 @@ public class Member extends TimeManager {
     private String phone;
 
     @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.MEMBER_ACTIVE;
 
@@ -36,6 +46,15 @@ public class Member extends TimeManager {
 
     @OneToMany(mappedBy = "member")
     private List<Order> orderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member") //완전 종속 관계가 아니라서 캐스캐이드 생략
+    private List<Like> likeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Question> questionList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Answer> answerList = new ArrayList<>();
 
     @Getter
     public enum Status{
@@ -50,10 +69,38 @@ public class Member extends TimeManager {
         }
     }
 
-    public void setStamp(Stamp stamp) {
+    public void setStamp(Stamp stamp) { // stamp랑 member 양방향 매핑
         this.stamp = stamp;
         if(stamp.getMember()!=this) {
             stamp.setMember(this);
+        }
+    }
+
+    public void setOrder(Order order) { // order랑 member 양방향 매핑
+        this.getOrderList().add(order);
+        if(order.getMember()!=this){
+            order.setMember(this);
+        }
+    }
+
+    public void setLike(Like like) {
+        this.getLikeList().add(like);
+        if(like.getMember()!=this){
+            like.setMember(this);
+        }
+    }
+
+    public void setQuestion(Question question) {
+        this.getQuestionList().add(question);
+        if(question.getMember()!=this){
+            question.setMember(this);
+        }
+    }
+
+    public void setAnswer(Answer answer) {
+        this.getAnswerList().add(answer);
+        if(answer.getMember()!=this){
+            answer.setMember(this);
         }
     }
 }

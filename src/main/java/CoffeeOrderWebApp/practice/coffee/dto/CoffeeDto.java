@@ -40,8 +40,13 @@ public class CoffeeDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class patchDto{
+        @Pattern(regexp = "[가-힣]+", message = "커피 한글 이름을 입력해주세요.")
         private String korName;
+
+        @Pattern(regexp = "[A-Za-z]+" ,message = "커피 영어 이름을 적어주세요.")
         private String engName;
+
+        @Range(min = 2000, max = 20000)
         private Integer price;
     }
 

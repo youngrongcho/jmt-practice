@@ -1,10 +1,11 @@
 package CoffeeOrderWebApp.practice.member.dto;
 
-import CoffeeOrderWebApp.practice.member.entity.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,7 +19,7 @@ public class MemberDto {
     public static class postDto{
         @NotNull
         @Pattern(regexp = "[a-zA-Z가-힣]+", message = "한글 또는 영문 이름을 작성해주세요.")
-        @Length(max = 8, message = "8자 이내로 작성해주세요.")
+        @Length(max = 8, message = "이름은 8자 이내로 작성해주세요.")
         private String name;
 
         @NotNull
@@ -28,6 +29,10 @@ public class MemberDto {
         @NotNull
         @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "000-0000-0000 형식으로 입력해주세요.")
         private String phone;
+
+        @NotNull
+        @Length(min = 6, message = "비밀번호는 6자 이상으로 작성해주세요.")
+        private String password;
     }
 
     @Getter
@@ -41,6 +46,9 @@ public class MemberDto {
 
         @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "000-0000-0000 형식으로 입력해주세요.")
         private String phone;
+
+        @Length(min = 6, message = "비밀번호는 6자 이상으로 작성해주세요.")
+        private String password;
     }
 
     @Getter
