@@ -23,7 +23,6 @@ import java.util.List;
 @RequestMapping("/jmt/order")
 public class OrderController {
     private final String DEFAULT_URI = "/jmt/order/";
-
     private OrderMapper mapper;
     private OrderService orderService;
 

@@ -6,21 +6,20 @@ import CoffeeOrderWebApp.practice.exception.ExceptionEnum;
 import CoffeeOrderWebApp.practice.exception.LogicException;
 import CoffeeOrderWebApp.practice.question.entity.Question;
 import CoffeeOrderWebApp.practice.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AnswerService {
-    private AnswerRepository answerRepository;
-    private QuestionService questionService;
-
-    public AnswerService(AnswerRepository answerRepository, QuestionService questionService) {
-        this.answerRepository = answerRepository;
-        this.questionService = questionService;
-    }
+    private final AnswerRepository answerRepository;
+    private final QuestionService questionService;
 
     public Answer createAnswer(Answer answer) {
+        verifyAdmin();
         // 존재하는 질문인지 확인
         Question question = questionService.findQuestion(answer.getQuestion().getQuestionId());
 
@@ -44,6 +43,7 @@ public class AnswerService {
     }
 
     public Answer modifyAnswer(Answer answer) {
+        verifyAdmin();
         Answer foundAnswer = verifyExistAnswer(answer.getAnswerId());
 
         Optional.ofNullable(answer.getMember().getMemberId()).ifPresent(id -> foundAnswer.getMember().setMemberId(id));
@@ -53,13 +53,19 @@ public class AnswerService {
     }
 
     public void deleteAnswer(long answerId) {
+        verifyAdmin();
         verifyExistAnswer(answerId);
         answerRepository.deleteById(answerId);
     }
 
     private Answer verifyExistAnswer(long answerId) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
-        Answer answer = optionalAnswer.orElseThrow(()->new LogicException(ExceptionEnum.ANSWER_NOT_FOUND));
+        Answer answer = optionalAnswer.orElseThrow(() -> new LogicException(ExceptionEnum.ANSWER_NOT_FOUND));
         return answer;
+    }
+
+    private void verifyAdmin() {
+        String authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+        if(!authorities.contains("ROLE_ADMIN")) throw new LogicException(ExceptionEnum.ADMIN_ACCESS_ONLY);;
     }
 }

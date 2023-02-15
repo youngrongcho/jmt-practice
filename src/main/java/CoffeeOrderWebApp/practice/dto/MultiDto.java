@@ -1,6 +1,5 @@
 package CoffeeOrderWebApp.practice.dto;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;

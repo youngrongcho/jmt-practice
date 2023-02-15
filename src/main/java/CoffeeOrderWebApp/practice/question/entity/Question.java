@@ -47,7 +47,7 @@ public class Question extends TimeManager { // 등록 날짜
     @Enumerated(EnumType.STRING)
     private NewQuestion newQuestion = NewQuestion.NEW_QUESTION; // 최신 글 표시??? -> 조회할 때 변경 (5초) LocalDateTime 계산
 
-    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Like> likeList = new ArrayList<>(); // 갯수 표시??? -> resonseDto로 매핑할 때 갯수로 변경. expression
 
     @ManyToOne
@@ -83,6 +83,7 @@ public class Question extends TimeManager { // 등록 날짜
         }
     }
 
+    @Getter
     public enum NewQuestion {
         NEW_QUESTION("최신 게시물"),
         QUESTION("게시물");

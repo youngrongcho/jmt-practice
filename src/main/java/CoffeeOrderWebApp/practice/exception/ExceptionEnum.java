@@ -17,7 +17,11 @@ public enum ExceptionEnum {
     QUESTION_ANSWERED(HttpStatus.BAD_REQUEST, "이미 답변이 작성된 문의입니다."),
     ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "작성된 답변이 없습니다."),
     ALREADY_LIKED(HttpStatus.BAD_REQUEST, "이미 [좋아요]를 눌렀습니다."),
-    THERE_IS_NO_LIKE(HttpStatus.BAD_REQUEST, "취소할 [좋아요]가 없습니다.");
+    THERE_IS_NO_LIKE(HttpStatus.BAD_REQUEST, "취소할 [좋아요]가 없습니다."),
+    ADMIN_ACCESS_ONLY(HttpStatus.BAD_REQUEST, "관리자만 접근 가능합니다."),
+    USER_ACCESS_ONLY(HttpStatus.BAD_REQUEST, "회원만 접근 가능합니다."),
+    SELF_ACCESS_ONLY(HttpStatus.BAD_REQUEST, "본인만 접근 가능합니다(이메일 불일치)."),
+    SELF_AND_ADMIN_ONLY(HttpStatus.BAD_REQUEST, "본인과 관리자만 접근 가능합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

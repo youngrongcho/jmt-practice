@@ -16,6 +16,7 @@ public interface QuestionMapper {
     Question questionPatchDtoToQuestion(QuestionDto.Patch patch);
 
 //    @Mapping(target = "likeCount", expression = "java(question.getLikeList().size())")
+    @Mapping(source = "member.memberId", target = "memberId")
     QuestionDto.Response questionToResponseDto(Question question);
 
     List<QuestionDto.Response> questionsToResponseDtos(List<Question> question);

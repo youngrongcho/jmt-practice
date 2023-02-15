@@ -63,6 +63,7 @@ public class QuestionController {
     public ResponseEntity getQuestions(Pageable pageable) {
         Page<Question> questionPage = questionService.getQuestions(pageable);
         List<Question> questionList = questionPage.getContent();
+        questionList.stream().map(question -> questionService.updateOld(question)).collect(Collectors.toList());
         return new ResponseEntity(new MultiDto<>(questionList.stream().map(
                 question -> new QnADto(mapper.questionToResponseDto(question), question.getAnswer()))
                 .collect(Collectors.toList()), questionPage), HttpStatus.OK);

@@ -5,6 +5,7 @@ import CoffeeOrderWebApp.practice.answer.entity.Answer;
 import CoffeeOrderWebApp.practice.answer.mapper.AnswerMapper;
 import CoffeeOrderWebApp.practice.answer.service.AnswerService;
 import CoffeeOrderWebApp.practice.utils.Uri;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,16 +17,12 @@ import java.net.URI;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/jmt/answer")
 public class AnswerController {
     private final String DEFAULT_URI = "/jmt/answer/";
-    private AnswerMapper mapper;
-    private AnswerService answerService;
-
-    public AnswerController(AnswerMapper mapper, AnswerService answerService) {
-        this.mapper = mapper;
-        this.answerService = answerService;
-    }
+    private final AnswerMapper mapper;
+    private final AnswerService answerService;
 
     @PostMapping
     public ResponseEntity postAnswer(@RequestBody @Valid AnswerDto.Post post){

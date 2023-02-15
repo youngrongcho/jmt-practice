@@ -48,10 +48,12 @@ public class QuestionDto {
     @Getter
     public static class Response{
         private long questionId;
+        private long memberId;
         private String title;
         private String content;
         private String openToOthers;
         private String status;
+        private String newQuestion;
         private int viewCount;
         private int likeCount;
         private LocalDateTime createdAt;

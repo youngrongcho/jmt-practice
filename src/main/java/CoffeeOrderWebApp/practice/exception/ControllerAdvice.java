@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolationException;
 
 @Slf4j
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ControllerAdvice {
     @ExceptionHandler(LogicException.class)
     public ResponseEntity logicExceptionHandler(LogicException e){

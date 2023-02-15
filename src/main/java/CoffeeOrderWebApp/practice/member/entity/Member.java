@@ -2,12 +2,10 @@ package CoffeeOrderWebApp.practice.member.entity;
 
 import CoffeeOrderWebApp.practice.answer.entity.Answer;
 import CoffeeOrderWebApp.practice.auditing.TimeManager;
-import CoffeeOrderWebApp.practice.question.entity.Like;
 import CoffeeOrderWebApp.practice.order.entity.Order;
+import CoffeeOrderWebApp.practice.question.entity.Like;
 import CoffeeOrderWebApp.practice.question.entity.Question;
 import CoffeeOrderWebApp.practice.stamp.Stamp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +26,7 @@ public class Member extends TimeManager {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String email;
 
     @Column(nullable = false)
@@ -40,6 +38,9 @@ public class Member extends TimeManager {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.MEMBER_ACTIVE;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList();
 
     @OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Stamp stamp;

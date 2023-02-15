@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-//    @Query(value = "SELECT q FROM Question q WHERE q.status <> 'QUESTION_DELETE'")
-//    Page<Question> findAll(Pageable pageable);
+    @Query(value = "SELECT q FROM Question q WHERE q.status <> 'QUESTION_DELETE' and q.openToOthers <> 'QUESTION_SECRET'")
+    Page<Question> findAll(Pageable pageable);
 }

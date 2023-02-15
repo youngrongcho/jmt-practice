@@ -1,5 +1,6 @@
 package CoffeeOrderWebApp.practice.exception;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,10 @@ public class ErrorResponse {
 
     public static ErrorResponse of(Exception e) {
         return new ErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    public static ErrorResponse of(HttpStatus status){
+        return new ErrorResponse(status.getReasonPhrase(), status);
     }
 
     @Getter
