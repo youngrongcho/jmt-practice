@@ -3,10 +3,7 @@ package CoffeeOrderWebApp.practice.security.config;
 import CoffeeOrderWebApp.practice.member.service.MemberService;
 import CoffeeOrderWebApp.practice.security.filter.CustomAuthenticationFilter;
 import CoffeeOrderWebApp.practice.security.filter.VerificationFilter;
-import CoffeeOrderWebApp.practice.security.handler.CustomAccessDeniedHandler;
-import CoffeeOrderWebApp.practice.security.handler.CustomAuthenticationEntryPoint;
-import CoffeeOrderWebApp.practice.security.handler.CustomAuthenticationFailureHandler;
-import CoffeeOrderWebApp.practice.security.handler.CustomAuthenticationSuccessHandler;
+import CoffeeOrderWebApp.practice.security.handler.*;
 import CoffeeOrderWebApp.practice.security.jwt.JwtTokenizer;
 import CoffeeOrderWebApp.practice.security.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +16,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,6 +39,7 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -87,15 +85,11 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/*/question/**").hasRole("USER")
                         .antMatchers(HttpMethod.GET, "/*/question/**").permitAll()
                         .antMatchers("/*/answer/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
-                ).oauth2Login();
+                        .anyRequest().authenticated()
+                ).oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenizer, authorityUtils, memberService)));
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -123,6 +117,7 @@ public class SecurityConfiguration {
 
             builder
                     .addFilter(customAuthenticationFilter)
+                    .addFilterAfter(verificationFilter, OAuth2LoginAuthenticationFilter.class)
                     .addFilterAfter(verificationFilter, CustomAuthenticationFilter.class);
         }
     }
